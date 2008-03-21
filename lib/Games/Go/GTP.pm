@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Exporter;
 use vars qw(@ISA @EXPORT $VERSION);
-$VERSION = 0.02;
+$VERSION = 0.03;
 @ISA     = qw(Exporter);
 @EXPORT  = qw(&gtpcommand);
 
@@ -125,8 +125,8 @@ sub place_free_handicap {
   for (1..$handicap) {
     my $move = $player->chooselegalmove('B', $referee);
     $player->update('B', $referee);
+    $referee->setup('AB', join ',', $move);
     push @moves, $move;
-    $referee->setup('AB', join ',', @moves);
   }
   return '=', join ' ', @moves
 }
