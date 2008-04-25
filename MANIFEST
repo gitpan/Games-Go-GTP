@@ -4,6 +4,5 @@ MANIFEST
 README
 t/Games-Go-GTP.t
 lib/Games/Go/GTP.pm
-example/kgsbot.pl
 
 META.yml                                 Module meta-data (added by MakeMaker)

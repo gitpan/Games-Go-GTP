@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Exporter;
 use vars qw(@ISA @EXPORT $VERSION);
-$VERSION = 0.03;
+$VERSION = 0.04;
 @ISA     = qw(Exporter);
 @EXPORT  = qw(&gtpcommand);
 
@@ -31,6 +31,24 @@ my %known_commands = (
 my $PROTOCOL_VERSION_NO = 2;
 my $ENGINE_NAME = 'ppme';
 my $ENGINE_VERSION = '0.03';
+
+sub engineName {
+  my $ename = shift;
+  $ENGINE_NAME = $ename if defined $ename;
+  return $ENGINE_NAME
+}
+
+sub engineVersion {
+  my $eversion = shift;
+  $ENGINE_VERSION = $eversion if defined $eversion;
+  return $ENGINE_VERSION
+}
+
+sub protocolVersion {
+  my $pversion = shift;
+  $PROTOCOL_VERSION_NO = $pversion if defined $pversion;
+  return $PROTOCOL_VERSION_NO
+}
 
 sub gtpcommand {
   my ($command, $res, @params);
@@ -85,7 +103,7 @@ sub boardsize {
   my ($size, $referee, $player) = @_;
   eval {$referee->size($size)};
   return '?',' unacceptable size' if $@ or $size > 25;
-  $player->size($referee->size);
+  $player->size($size);
   return '=', undef, 1
 }
 
@@ -190,9 +208,9 @@ Games::Go::GTP - Interact with a server or Go playing program using GTP
 =head1 SYNOPSIS
 
   use Games::Go::GTP;
-  use Player;
+  use Games::Go::Player;
   my $referee = new Games::Go::Referee;
-  my $player = new Player;
+  my $player  = new Games::Go::Player;
   ...
   my ($res, $status) = Games::Go::GTP::gtpcommand(@args, $referee, $player);
 
@@ -211,5 +229,19 @@ supports the following methods:
 =head2 General use
 
   An example of a script to run a bot on KGS is given in the example folder.
+
+
+=head1 METHODS
+
+=head2 engineName, engineVersion, protocolVersion
+
+  use Games::Go::GTP;
+  Games::Go::GTP::engineName('MYNAME');  # set MYNAME to anything you like
+  Games::Go::GTP::engineVersion('0.01'); # set '0.01' to anything you like
+  Games::Go::GTP::protocolVersion('2');  # leave this one alone ?
+
+=head1 AUTHOR (version 0.01)
+
+Daniel Gilder
 
 =cut
