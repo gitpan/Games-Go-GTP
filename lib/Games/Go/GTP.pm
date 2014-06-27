@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Exporter;
 use vars qw(@ISA @EXPORT $VERSION);
-$VERSION = 0.05;
+$VERSION = 0.06;
 @ISA     = qw(Exporter);
 @EXPORT  = qw(&gtpcommand);
 
