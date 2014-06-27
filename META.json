@@ -1,7 +1,7 @@
 {
    "abstract" : "Interact with a server or Go playing program using GTP",
    "author" : [
-      "Daniel Gilder <deg@cpan.org>"
+      "DG <deg@cpan.org>"
    ],
    "dynamic_config" : 1,
    "generated_by" : "ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.120921",
@@ -35,5 +35,5 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.06"
+   "version" : "0.07"
 }
