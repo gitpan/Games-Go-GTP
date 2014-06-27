@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Exporter;
 use vars qw(@ISA @EXPORT $VERSION);
-$VERSION = 0.04;
+$VERSION = 0.05;
 @ISA     = qw(Exporter);
 @EXPORT  = qw(&gtpcommand);
 
@@ -29,8 +29,8 @@ my %known_commands = (
 );
 
 my $PROTOCOL_VERSION_NO = 2;
-my $ENGINE_NAME = 'ppme';
-my $ENGINE_VERSION = '0.03';
+my $ENGINE_NAME = 'my engine';
+my $ENGINE_VERSION = '0.01';
 
 sub engineName {
   my $ename = shift;
@@ -104,7 +104,9 @@ sub boardsize {
   eval {$referee->size($size)};
   return '?',' unacceptable size' if $@ or $size > 25;
   $player->size($size);
-  return '=', undef, 1
+  $referee->restore(0);
+  $player->initboard($referee);
+  return '=', undef, 1 # so the caller of this module knows we're in a game
 }
 
 sub clear_board {
@@ -124,16 +126,15 @@ sub play {
   $colour = convertcolour($colour);
   eval {$referee->play($colour, $GTPpoint)};
   return '?', ' illegal move' if $@;
-  $player->update($colour, $referee);
   return '='
 }
 
 sub genmove {
   my ($colour, $referee, $player) = @_;
   $colour = convertcolour($colour);
+  $player->update($colour, $referee);
   my $move = $player->chooselegalmove($colour, $referee);
   $referee->play($colour, $move);
-  $player->update($colour, $referee);
   return '=', $move;
 }
 
@@ -141,8 +142,8 @@ sub place_free_handicap {
   my ($handicap, $referee, $player) = @_;
   my @moves;
   for (1..$handicap) {
-    my $move = $player->chooselegalmove('B', $referee);
     $player->update('B', $referee);
+    my $move = $player->chooselegalmove('B', $referee);
     $referee->setup('AB', join ',', $move);
     push @moves, $move;
   }
@@ -150,8 +151,8 @@ sub place_free_handicap {
 }
 
 sub set_free_handicap {
-  my $player  = pop @_;
-  my $referee = pop @_;
+  my $player  = pop;
+  my $referee = pop;
   $referee->setup('AB', join ',', @_);
   return '='
 }
@@ -242,6 +243,6 @@ supports the following methods:
 
 =head1 AUTHOR (version 0.01)
 
-Daniel Gilder
+DG
 
 =cut

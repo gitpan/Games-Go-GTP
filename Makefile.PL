@@ -8,5 +8,6 @@ WriteMakefile(
     PREREQ_PM         => {
 			 }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (AUTHOR         => 'Daniel Gilder <dan@>') : ()),
+      (ABSTRACT_FROM  => 'lib/Games/Go/GTP.pm', # retrieve abstract from module
+       AUTHOR         => 'Daniel Gilder <deg@cpan.org>') : ()),
 );
